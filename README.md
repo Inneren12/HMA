@@ -18,3 +18,18 @@
 - `:app:android` — минимальная Android-оболочка.
 
 Откройте проект в Android Studio как Gradle-проект. При необходимости обновите версии плагинов.
+
+## S1 — I/O и цвет (Android)
+
+Первая итерация I/O реализована в модуле `:core:io`:
+
+- Общий API на `ImageSource`, `loadImage`, превью и конвертацию в sRGB через Compose `ImageBitmap`.
+- Android actual поддерживает EXIF-ориентацию, чтение JPEG/PNG, конвертацию цветового профиля и ленивый `ImageRef`.
+- Превью ограничивается по длинной стороне (по умолчанию 1024 px) и всегда возвращается в sRGB.
+- Заглушки для будущих desktop/iOS actual расположены в `core/io/src/desktopMain` и `core/io/src/iosMain`.
+
+### Локальный запуск
+
+```bash
+./gradlew :core:io:assemble :core:io:testDebugUnitTest
+```
