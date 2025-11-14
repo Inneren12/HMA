@@ -10,6 +10,11 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/app/android" />
+            <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/core/decision" />
+            <option value="$PROJECT_DIR$/core/domain" />
+            <option value="$PROJECT_DIR$/core/io" />
           </set>
         </option>
       </GradleProjectSettings>

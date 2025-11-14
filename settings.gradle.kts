@@ -1,16 +1,11 @@
 pluginManagement {
     repositories {
-        google {
-            content {
-                includeGroupByRegex("com\\.android.*")
-                includeGroupByRegex("com\\.google.*")
-                includeGroupByRegex("androidx.*")
-            }
-        }
+        google()
         mavenCentral()
         gradlePluginPortal()
     }
 }
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -19,6 +14,9 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "HMA"
-include(":app")
- 
+rootProject.name = "handmade-kmp-skeleton"
+
+include(":core:domain")
+include(":core:decision")
+include(":core:io")
+include(":app:android")
