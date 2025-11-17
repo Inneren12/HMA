@@ -6,6 +6,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,9 +17,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -30,12 +31,14 @@ fun ImportScreen(
     viewModel: ImportViewModel = viewModel()
 ) {
     val state by viewModel.uiState.collectAsState()
+    val context = LocalContext.current
 
     val pickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         if (uri != null) {
-            viewModel.onImagePicked(uri)
+            // Передаём ContentResolver, чтобы внутри VM читать байты файла
+            viewModel.onImagePicked(uri, context.contentResolver)
         }
     }
 
@@ -61,9 +64,9 @@ fun ImportScreen(
             state.isLoading -> {
                 CircularProgressIndicator()
             }
-
             state.image != null -> {
-                val img = state.image
+                // уже в ветке where image != null, можно безопасно разыменовать
+                val img = state.image!!
                 Text("Размер: ${img.width}×${img.height}")
                 Spacer(Modifier.height(8.dp))
                 Image(

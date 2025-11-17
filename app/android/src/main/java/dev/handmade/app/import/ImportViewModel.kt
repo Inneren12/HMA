@@ -1,5 +1,6 @@
 package dev.handmade.app.import
 
+import android.content.ContentResolver
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -29,22 +30,39 @@ class ImportViewModel(
     private val _uiState = MutableStateFlow(ImportUiState())
     val uiState: StateFlow<ImportUiState> = _uiState.asStateFlow()
 
-    fun onImagePicked(uri: Uri) {
+    /**
+     * Обрабатываем Uri, сразу читая байты через ContentResolver.
+     * Так обходим баги с Photo Picker URI внутри ядра и не зависим от platformDecode для UriString.
+     */
+    fun onImagePicked(uri: Uri, resolver: ContentResolver) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
 
             try {
-                val source = ImageSource.UriString(uri.toString())
+                val source = withContext(ioDispatcher) {
+                    val bytes = resolver.openInputStream(uri)?.use { it.readBytes() }
+                        ?: throw ImageIoError.IoFailure("Unable to open URI $uri")
+                    val fileNameHint = uri.lastPathSegment
+                    ImageSource.Bytes(bytes, fileNameHint)
+                }
+
                 val result = withContext(ioDispatcher) {
                     loadImage(source)
                 }
+
                 _uiState.update { it.copy(isLoading = false, image = result) }
             } catch (t: Throwable) {
                 val msg = when (t) {
                     is ImageIoError -> t.message ?: t::class.simpleName ?: "Image I/O error"
                     else -> t.message ?: "Unexpected error"
                 }
-                _uiState.update { it.copy(isLoading = false, error = msg, image = null) }
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        error = msg,
+                        image = null
+                    )
+                }
             }
         }
     }
