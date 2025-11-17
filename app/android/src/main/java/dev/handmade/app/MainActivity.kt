@@ -1,11 +1,18 @@
 package dev.handmade.app
 
-import android.app.Activity
 import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.material3.MaterialTheme
+import dev.handmade.app.import.ImportScreen
 
-class MainActivity : Activity() {
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // S1: no UI yet. This is just a skeleton.
+        setContent {
+            MaterialTheme {
+                ImportScreen()
+            }
+        }
     }
 }
