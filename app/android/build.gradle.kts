@@ -9,10 +9,16 @@ android {
 
     defaultConfig {
         applicationId = "dev.handmade.app"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "0.1.0"
+    }
+
+    compileOptions {
+        // поднимаем Java до того же уровня, что и Kotlin (21)
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 
     buildTypes {

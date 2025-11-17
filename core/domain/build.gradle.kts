@@ -18,6 +18,13 @@ android {
     namespace = "dev.handmade.core.domain"
     compileSdk = 34
     defaultConfig {
-        minSdk = 24
+        minSdk = 26
     }
+
+    compileOptions {
+        // поднимаем Java до того же уровня, что и Kotlin (21)
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+    }
+
 }

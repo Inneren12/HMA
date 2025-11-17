@@ -6,18 +6,17 @@ import android.graphics.BitmapFactory
 actual class NativeImage internal constructor(internal val bitmap: Bitmap)
 
 actual fun load(path: String): NativeImage {
-    // S1 skeleton: decode file to Bitmap. Add real error handling later.
     val bmp = BitmapFactory.decodeFile(path) ?: error("Failed to decode image at $path")
     return NativeImage(bmp)
 }
 
 actual fun exifRotate(img: NativeImage): NativeImage {
-    // TODO: read EXIF and rotate if needed (S1 placeholder)
+    // TODO: прочитать EXIF и повернуть при необходимости (S1 placeholder)
     return img
 }
 
 actual fun toSRGB(img: NativeImage): NativeImage {
-    // TODO: ensure sRGB color space (S1 placeholder)
+    // TODO: гарантировать sRGB (S1 placeholder)
     return img
 }
 
